@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-
+import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import TextField from "@material-ui/core/TextField";
-
+import { withRouter } from "react-router-dom";
+import { Account } from "../../models/account";
 const styles = theme => ({
   container: {
     display: "flex",
@@ -51,34 +52,34 @@ class AddAccount extends Component {
       ...this.state.currentAccount,
       [e.currentTarget.name]: e.target.value
     };
-
     this.setState(prevState => ({
       currentAccount
     }));
-
-    // this.setState(prevState => ({
-    //   currentAccount: {
-    //     ...prevState.currentAccount,
-    //     [e.currentTarget.name]: e.target.value
-    //   }
-    // }));
   };
 
   handleClose = () => {
     this.setState(prevState => ({
       isModalOpened: false
     }));
+    this.props.history.push("/account");
   };
 
   createAccount = () => {
-    //modeling
+    let account = new Account(
+      this.state.currentAccount.accountId,
+      this.state.currentAccount.accountNumber,
+      this.state.currentAccount.accountOwner,
+      this.state.currentAccount.accountBalance,
+      "personal"
+    );
+
     fetch("http://localhost:2200/accounts", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(this.state.currentAccount)
+      body: JSON.stringify(account)
     })
       .then(result => {
         return result.json();
@@ -106,6 +107,7 @@ class AddAccount extends Component {
           onChange={this.handleInputChange}
           margin="normal"
         />
+        <br />
         <TextField
           id="accountNumber"
           label="accountNumber"
@@ -115,6 +117,7 @@ class AddAccount extends Component {
           onChange={this.handleInputChange}
           margin="normal"
         />
+        <br />
         <TextField
           id="accountOwner"
           label="accountOwner"
@@ -124,6 +127,7 @@ class AddAccount extends Component {
           onChange={this.handleInputChange}
           margin="normal"
         />
+        <br />
         <TextField
           id="accountBalance"
           label="accountBalance"
@@ -134,6 +138,8 @@ class AddAccount extends Component {
           onChange={this.handleInputChange}
           margin="normal"
         />
+        <br />
+
         <Button
           variant="contained"
           color="primary"

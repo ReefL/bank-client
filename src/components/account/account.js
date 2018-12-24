@@ -45,37 +45,31 @@ class Account extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
-        <h2> This is the account page </h2>
-
-        {this.state.accounts.map(curAccount => {
-          return (
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography
-                  className={classes.title}
-                  color="textSecondary"
-                  gutterBottom
+      <div className="container">
+        <div className="row">
+          {this.state.accounts.map(curAccount => {
+            return (
+              <div
+                className="col-3"
+                style={{
+                  padding: "5px"
+                }}
+              >
+                <div
+                  style={{
+                    border: "1px solid black",
+                    borderRadius: "10px",
+                    height: "150px",
+                    boxShadow: "5px 10px"
+                  }}
                 >
-                  {curAccount.id || curAccount.currentId}
-                </Typography>
-                <Typography variant="h5" component="h2" />
-                <Typography className={classes.pos} color="textSecondary">
-                  {curAccount.balance || curAccount.accountBalance}
-                </Typography>
-                <Typography component="p">
-                  {curAccount.account_number || curAccount.accountNumber}
-                </Typography>
-                <Typography component="p">
-                  {curAccount.owner}
-                  {/* {JSON.parse(curAccount.owner).map(owner => {
-                    return <span>{owner}</span>;
-                  })} */}
-                </Typography>
-              </CardContent>
-            </Card>
-          );
-        })}
+                  <h1> {curAccount.id} </h1>
+                  <div>{curAccount.owner} </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
