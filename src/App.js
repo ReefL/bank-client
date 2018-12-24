@@ -5,6 +5,7 @@ import "./App.css";
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
 import Account from "./components/account/account";
 import BankDetails from "./components/bank-details/bank-details";
+import addAccount from "./components/add-account/add-account";
 
 class App extends Component {
   componentDidMount() {
@@ -18,6 +19,7 @@ class App extends Component {
           <div>
             <Link to="/account"> Go to Account Page </Link>
             <Link to="/bank-details"> Go to Bank Page </Link>
+            <Link to="/add-account"> Go to add account </Link>
           </div>
           <div>
             <Switch>
@@ -26,6 +28,11 @@ class App extends Component {
                 key="bank-details"
                 path="/bank-details"
                 component={BankDetails}
+              />
+              <Route
+                key="add-account"
+                path="/add-account"
+                component={addAccount}
               />
               <Redirect from="/" to="/account" />
             </Switch>
