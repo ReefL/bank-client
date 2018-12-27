@@ -18,7 +18,7 @@ export default class Header extends Component {
               <h1>BankApp</h1>
             </Navbar.Brand>
             <Navbar.Brand>
-              <Link to="/account"> Accounts </Link>
+              <Link to="/accounts"> Accounts </Link>
             </Navbar.Brand>
             <Navbar.Brand>
               <Link to="/bank-details"> Bank </Link>

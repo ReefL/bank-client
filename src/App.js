@@ -5,10 +5,11 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import { BrowserRouter, Link, Switch, Route, Redirect } from "react-router-dom";
-import Account from "./components/account/account";
+import AccountsPage from "./components/account/accounts-page";
 import BankDetails from "./components/bank-details/bank-details";
-import addAccount from "./components/add-account/add-account";
+import addAccount from "./components/account/add-account";
 import Header from "./components/header/header";
+import Account from "./components/account/account";
 class App extends Component {
   componentDidMount() {
     console.log("app loaded!!!");
@@ -21,7 +22,7 @@ class App extends Component {
           <div />
           <div>
             <Switch>
-              <Route key="account" path="/account" component={Account} />
+              <Route key="accounts" path="/accounts" component={AccountsPage} />
               <Route
                 key="bank-details"
                 path="/bank-details"
@@ -31,6 +32,12 @@ class App extends Component {
                 key="add-account"
                 path="/add-account"
                 component={addAccount}
+              />
+              <Route
+                key="account"
+                exact={true}
+                path="/account/:id"
+                component={Account}
               />
               <Redirect from="/" to="/account" />
             </Switch>
