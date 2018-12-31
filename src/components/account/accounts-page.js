@@ -75,31 +75,31 @@ class AccountsPage extends Component {
               </div>
             }
           >
-            {this.state.accounts.map((curAccount, index) => {
-              return (
-                <div
-                  key={index}
-                  className="col-3"
-                  style={{
-                    padding: "5px"
-                  }}
-                >
+            <div className="row">
+              {this.state.accounts.map((curAccount, index) => {
+                return (
                   <div
-                    style={{
-                      border: "1px solid black",
-                      borderRadius: "10px",
-                      height: "150px",
-                      boxShadow: "5px 10px"
-                    }}
+                    key={index}
+                    style={{ display: "inline", margin: "10px" }}
+                    className="col-3"
                   >
-                    <Link to={`/account/${curAccount.id}`}>
-                      <h1> {curAccount.id} </h1>
-                    </Link>
-                    <div>{curAccount.owner} </div>
+                    <div
+                      style={{
+                        border: "1px solid black",
+                        borderRadius: "10px",
+                        height: "150px",
+                        boxShadow: "5px 10px"
+                      }}
+                    >
+                      <Link to={`/account/${curAccount.id}`}>
+                        <h1> {curAccount.id} </h1>
+                      </Link>
+                      <div>{curAccount.owner} </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </InfiniteScroll>
         </div>
       </div>

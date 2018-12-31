@@ -10,7 +10,21 @@ import BankDetails from "./components/bank-details/bank-details";
 import addAccount from "./components/account/add-account";
 import Header from "./components/header/header";
 import Account from "./components/account/account";
+import Snackbar from "@material-ui/core/Snackbar";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { sb_status: false };
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      sb_status: nextProps.snackBarStatus
+    });
+  }
   componentDidMount() {
     console.log("app loaded!!!");
   }
@@ -42,10 +56,42 @@ class App extends Component {
               <Redirect from="/" to="/account" />
             </Switch>
           </div>
+          <Snackbar
+            onClose={() => {
+              this.setState({
+                sb_status: false
+              });
+            }}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+            open={this.state.sb_status}
+            autoHideDuration={2000}
+            message={<span id="message-id">{this.props.message}</span>}
+          />
         </div>
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    snackBarStatus: state.snackBarStatus,
+    message: state.message
+  };
+}
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     actions: bindActionCreators(
+//       {
+//         addingAccount: accountAdded
+//       },
+//       dispatch
+//     )
+//   };
+// }
+
+export default connect(mapStateToProps)(App);

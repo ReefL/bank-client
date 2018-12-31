@@ -8,6 +8,12 @@ import Dialog from "@material-ui/core/Dialog";
 import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
 import { Account } from "../../models/account";
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { accountAdded } from "../../redux/actions";
+
 const styles = theme => ({
   container: {
     display: "flex",
@@ -73,23 +79,24 @@ class AddAccount extends Component {
       "personal"
     );
 
-    fetch("http://localhost:2200/accounts", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(account)
-    })
-      .then(result => {
-        return result.json();
-      })
-      .then(result => {
-        this.setState({
-          isModalOpened: true,
-          resultMessage: result.message
-        });
-      });
+    this.props.actions.addingAccount(account);
+    // fetch("http://localhost:2200/accounts", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(account)
+    // })
+    //   .then(result => {
+    //     return result.json();
+    //   })
+    //   .then(result => {
+    //     this.setState({
+    //       isModalOpened: true,
+    //       resultMessage: result.message
+    //     });
+    //   });
   };
 
   render() {
@@ -168,4 +175,28 @@ AddAccount.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AddAccount);
+function mapStateToProps(state) {
+  return {
+    snackBarStatus: state.snackBarStatus
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        addingAccount: accountAdded
+      },
+      dispatch
+    )
+  };
+}
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AddAccount)
+);
+
+//connect(mapstatetoprops,mapdispatchtoprops)(ComponentClassName)
