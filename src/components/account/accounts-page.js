@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroller";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getAccounts } from "./../../redux/actions";
+
 const styles = {
   card: {
     minWidth: 275
@@ -25,7 +29,14 @@ class AccountsPage extends Component {
     super(props);
 
     this.state = { accounts: [], skip: 0, take: 20, loadMore: true };
-    this.getAccounts = this.getAccounts.bind(this);
+    // this.getAccounts = this.getAccounts.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // this.setState({
+    //   ...this.state,
+    //   skip: nextProps.accounts.length
+    // });
   }
 
   componentDidMount() {
@@ -38,28 +49,29 @@ class AccountsPage extends Component {
     //       accounts: result
     //     });
     //   });
+    //refactor component request
   }
 
-  getAccounts() {
-    fetch(
-      `http://10.103.50.39:2200/accounts/${this.state.skip}/${this.state.take}`
-    )
-      .then(result => {
-        return result.json();
-      })
-      .then(result => {
-        let _loadMore = true;
-        if (this.state.take + this.state.accounts.length > 100) {
-          _loadMore = false;
-        }
-        this.setState(prevState => ({
-          ...prevState,
-          loadMore: _loadMore,
-          accounts: [...prevState.accounts, ...result],
-          skip: prevState.accounts.length + prevState.take
-        }));
-      });
-  }
+  // getAccounts() {
+  //   fetch(
+  //     `http://10.103.50.39:2200/accounts/${this.state.skip}/${this.state.take}`
+  //   )
+  //     .then(result => {
+  //       return result.json();
+  //     })
+  //     .then(result => {
+  //       let _loadMore = true;
+  //       if (this.state.take + this.state.accounts.length > 100) {
+  //         _loadMore = false;
+  //       }
+  //       this.setState(prevState => ({
+  //         ...prevState,
+  //         loadMore: _loadMore,
+  //         accounts: [...prevState.accounts, ...result],
+  //         skip: prevState.accounts.length + prevState.take
+  //       }));
+  //     });
+  // }
 
   render() {
     const { classes } = this.props;
@@ -67,7 +79,9 @@ class AccountsPage extends Component {
       <div className="container">
         <div className="row">
           <InfiniteScroll
-            loadMore={this.getAccounts}
+            loadMore={() => {
+             
+            }}
             hasMore={this.state.loadMore}
             loader={
               <div className="loader" key={0}>
@@ -76,7 +90,7 @@ class AccountsPage extends Component {
             }
           >
             <div className="row">
-              {this.state.accounts.map((curAccount, index) => {
+              {this.props.accounts.map((curAccount, index) => {
                 return (
                   <div
                     key={index}
@@ -107,4 +121,26 @@ class AccountsPage extends Component {
   }
 }
 
-export default withStyles(styles)(AccountsPage);
+function mapStateToProps(state) {
+  return {
+    accounts: state.accounts || []
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        getAccounts: getAccounts
+      },
+      dispatch
+    )
+  };
+}
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccountsPage)
+);

@@ -5,9 +5,14 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import reducers from "./redux/reducers";
-let _store = createStore(reducers, {});
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "./redux/saga";
+
+let sagaMiddleware = createSagaMiddleware();
+let _store = createStore(reducers, {}, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={_store}>
@@ -20,4 +25,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
-

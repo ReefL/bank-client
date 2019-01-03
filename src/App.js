@@ -13,6 +13,7 @@ import Account from "./components/account/account";
 import Snackbar from "@material-ui/core/Snackbar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { getAccounts } from "./redux/actions";
 
 class App extends Component {
   constructor(props) {
@@ -22,11 +23,11 @@ class App extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      sb_status: nextProps.snackBarStatus
+      sb_status: nextProps.snackBarStatus || false
     });
   }
   componentDidMount() {
-    console.log("app loaded!!!");
+   
   }
   render() {
     return (
@@ -83,15 +84,18 @@ function mapStateToProps(state) {
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     actions: bindActionCreators(
-//       {
-//         addingAccount: accountAdded
-//       },
-//       dispatch
-//     )
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        getAccounts: getAccounts
+      },
+      dispatch
+    )
+  };
+}
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

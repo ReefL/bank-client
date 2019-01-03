@@ -7,8 +7,15 @@ export const accountAdded = newAccount => {
   };
 };
 
-export const getAccounts = () => {
+export const getAccountsDone = accounts => {
   return {
-    type: ACTIONS.GET_ACCOUNTS
+    type: ACTIONS.GET_ACCOUNTS_DONE,
+    accounts
+  };
+};
+
+export const getAccounts = (skip,take) => {
+  return {
+    type: ACTIONS.GET_ACCOUNTS , skip,take
   };
 };
